@@ -33,7 +33,7 @@ export const POST = async (request: NextRequest) => {
       { message: "Note created successfully", note },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
