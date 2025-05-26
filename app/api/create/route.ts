@@ -8,21 +8,36 @@ export const POST = async (request: NextRequest) => {
   if (!title || !description) {
     return NextResponse.json(
       { error: "Title and description are required" },
-      { status: 400 }
+      {
+        status: 400,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   }
 
   if (title.length < 3) {
     return NextResponse.json(
       { error: "Title must be at least 3 characters long" },
-      { status: 400 }
+      {
+        status: 400,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   }
 
   if (description.length < 3) {
     return NextResponse.json(
       { error: "Description must be at least 3 characters long" },
-      { status: 400 }
+      {
+        status: 400,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   }
 
@@ -31,12 +46,22 @@ export const POST = async (request: NextRequest) => {
     const note = await Note.create({ title, description });
     return NextResponse.json(
       { message: "Note created successfully", note },
-      { status: 201 }
+      {
+        status: 201,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   } catch (error: any) {
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      {
+        status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   }
 };

@@ -16,21 +16,36 @@ export async function PUT(
     if (!title || !description) {
       return NextResponse.json(
         { error: "Title and description are required" },
-        { status: 400 }
+        {
+          status: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
       );
     }
 
     if (title.length < 3) {
       return NextResponse.json(
         { error: "Title must be at least 3 characters long" },
-        { status: 400 }
+        {
+          status: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
       );
     }
 
     if (description.length < 3) {
       return NextResponse.json(
         { error: "Description must be at least 3 characters long" },
-        { status: 400 }
+        {
+          status: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
       );
     }
 
@@ -46,12 +61,22 @@ export async function PUT(
 
     return NextResponse.json(
       { message: "Note updated successfully", updatedNote },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   } catch (error: any) {
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      {
+        status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   }
 }
@@ -72,12 +97,22 @@ export async function DELETE(
 
     return NextResponse.json(
       { message: "Note deleted successfully" },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   } catch (error: any) {
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      {
+        status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   }
 }

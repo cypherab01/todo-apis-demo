@@ -7,11 +7,24 @@ export const GET = async (request: NextRequest) => {
     await connectToDatabase();
     const notes = await Note.find();
     const notesLength = notes.length;
-    return NextResponse.json({ notes, notesLength }, { status: 200 });
+    return NextResponse.json(
+      { notes, notesLength },
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
   } catch (error: any) {
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      {
+        status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
   }
 };
