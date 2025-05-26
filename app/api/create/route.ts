@@ -2,6 +2,12 @@ import connectToDatabase from "@/libs/db";
 import Note from "@/types/note.model";
 import { NextRequest, NextResponse } from "next/server";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 export const POST = async (request: NextRequest) => {
   const { title, description } = await request.json();
 
@@ -10,9 +16,7 @@ export const POST = async (request: NextRequest) => {
       { error: "Title and description are required" },
       {
         status: 400,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   }
@@ -22,9 +26,7 @@ export const POST = async (request: NextRequest) => {
       { error: "Title must be at least 3 characters long" },
       {
         status: 400,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   }
@@ -34,9 +36,7 @@ export const POST = async (request: NextRequest) => {
       { error: "Description must be at least 3 characters long" },
       {
         status: 400,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   }
@@ -48,9 +48,7 @@ export const POST = async (request: NextRequest) => {
       { message: "Note created successfully", note },
       {
         status: 201,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   } catch (error: any) {
@@ -58,10 +56,15 @@ export const POST = async (request: NextRequest) => {
       { error: "Internal server error" },
       {
         status: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   }
+};
+
+export const OPTIONS = async (request: NextRequest) => {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
 };

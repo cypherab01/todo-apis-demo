@@ -2,6 +2,12 @@ import connectToDatabase from "@/libs/db";
 import Note from "@/types/note.model";
 import { NextRequest, NextResponse } from "next/server";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -18,9 +24,7 @@ export async function PUT(
         { error: "Title and description are required" },
         {
           status: 400,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
+          headers: corsHeaders,
         }
       );
     }
@@ -30,9 +34,7 @@ export async function PUT(
         { error: "Title must be at least 3 characters long" },
         {
           status: 400,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
+          headers: corsHeaders,
         }
       );
     }
@@ -42,9 +44,7 @@ export async function PUT(
         { error: "Description must be at least 3 characters long" },
         {
           status: 400,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
+          headers: corsHeaders,
         }
       );
     }
@@ -56,16 +56,20 @@ export async function PUT(
     );
 
     if (!updatedNote) {
-      return NextResponse.json({ error: "Note not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Note not found" },
+        {
+          status: 404,
+          headers: corsHeaders,
+        }
+      );
     }
 
     return NextResponse.json(
       { message: "Note updated successfully", updatedNote },
       {
         status: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   } catch (error: any) {
@@ -73,9 +77,7 @@ export async function PUT(
       { error: "Internal server error" },
       {
         status: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   }
@@ -92,16 +94,20 @@ export async function DELETE(
     const note = await Note.findByIdAndDelete(id);
 
     if (!note) {
-      return NextResponse.json({ error: "Note not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Note not found" },
+        {
+          status: 404,
+          headers: corsHeaders,
+        }
+      );
     }
 
     return NextResponse.json(
       { message: "Note deleted successfully" },
       {
         status: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   } catch (error: any) {
@@ -109,10 +115,15 @@ export async function DELETE(
       { error: "Internal server error" },
       {
         status: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   }
+}
+
+export async function OPTIONS(request: NextRequest) {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
 }

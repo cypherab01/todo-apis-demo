@@ -2,6 +2,12 @@ import connectToDatabase from "@/libs/db";
 import Note from "@/types/note.model";
 import { NextRequest, NextResponse } from "next/server";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 export const GET = async (request: NextRequest) => {
   try {
     await connectToDatabase();
@@ -11,9 +17,7 @@ export const GET = async (request: NextRequest) => {
       { notes, notesLength },
       {
         status: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   } catch (error: any) {
@@ -21,10 +25,15 @@ export const GET = async (request: NextRequest) => {
       { error: "Internal server error" },
       {
         status: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: corsHeaders,
       }
     );
   }
+};
+
+export const OPTIONS = async (request: NextRequest) => {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
 };
